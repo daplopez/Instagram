@@ -25,6 +25,7 @@
 
     [Parse initializeWithConfiguration:config];
     
+    
     /*
     PFObject *gameScore = [PFObject objectWithClassName:@"GameScore"];
     gameScore[@"score"] = @1337;
