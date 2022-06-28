@@ -18,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    /*
     UIImagePickerController *imagePickerVC = [UIImagePickerController new];
     imagePickerVC.delegate = self;
     imagePickerVC.allowsEditing = YES;
@@ -33,6 +33,46 @@
     }
 
     [self presentViewController:imagePickerVC animated:YES completion:nil];
+     */
+}
+
+- (IBAction)didTapCamera:(id)sender {
+    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
+    imagePickerVC.delegate = self;
+    imagePickerVC.allowsEditing = YES;
+
+    // The Xcode simulator does not support taking pictures, so let's first check that the camera is indeed supported on the device before trying to present it.
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
+    }
+    else {
+        NSLog(@"Camera 🚫 available so we will use photo library instead");
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Camera not available" message:@"Defaulting to photo library" preferredStyle:(UIAlertControllerStyleAlert)];
+        // create a cancel action
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        // handle cancel response here. Doing nothing will dismiss the view.
+            [self presentViewController:imagePickerVC animated:YES completion:nil];
+            
+        }];
+        // add the cancel action to the alertController
+        [alert addAction:cancelAction];
+
+        [self presentViewController:alert animated:YES completion:nil];
+        imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        
+    }
+    [self presentViewController:imagePickerVC animated:YES completion:nil];
+}
+
+- (IBAction)didTapAlbum:(id)sender {
+    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
+    imagePickerVC.delegate = self;
+    imagePickerVC.allowsEditing = YES;
+    
+    imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    
+    [self presentViewController:imagePickerVC animated:YES completion:nil];
+    
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
@@ -42,7 +82,10 @@
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
 
     // Do something with the images (based on your use case)
-    [self.imageToPost setImage:editedImage];
+    //[self.imageToPost setImage:editedImage];
+    CGRect bounds = UIScreen.mainScreen.bounds;
+    CGFloat width = bounds.size.width;
+    self.imageToPost.image = [self resizeImage:editedImage withSize:CGSizeMake(width, width)];
     
     // Dismiss UIImagePickerController to go back to your original view controller
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -57,11 +100,6 @@
 
 
 - (IBAction)didTapShare:(id)sender {
-    
-    CGRect bounds = UIScreen.mainScreen.bounds;
-    CGFloat width = bounds.size.width;
-    
-    [self resizeImage:self.imageToPost.image withSize:CGSizeMake(width, width)];
     
     [Post postUserImage:self.imageToPost.image withCaption:self.imageCaption.text withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
         if (error) {
