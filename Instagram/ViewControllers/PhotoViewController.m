@@ -6,6 +6,8 @@
 //
 
 #import "PhotoViewController.h"
+#import "SceneDelegate.h"
+#import "Post.h"
 
 @interface PhotoViewController () 
 
@@ -17,7 +19,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    // Modally present a UIImagePickerController screen
     UIImagePickerController *imagePickerVC = [UIImagePickerController new];
     imagePickerVC.delegate = self;
     imagePickerVC.allowsEditing = YES;
@@ -41,9 +42,55 @@
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
 
     // Do something with the images (based on your use case)
+    [self.imageToPost setImage:editedImage];
     
     // Dismiss UIImagePickerController to go back to your original view controller
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+- (IBAction)didTapCancel:(id)sender {
+    SceneDelegate *myDelegate = (SceneDelegate *)self.view.window.windowScene.delegate;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    myDelegate.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"HomeFeed"];
+}
+
+
+- (IBAction)didTapShare:(id)sender {
+    
+    CGRect bounds = UIScreen.mainScreen.bounds;
+    CGFloat width = bounds.size.width;
+    
+    [self resizeImage:self.imageToPost.image withSize:CGSizeMake(width, width)];
+    
+    [Post postUserImage:self.imageToPost.image withCaption:self.imageCaption.text withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Error sharing post");
+            
+        } else {
+            NSLog(@"Successfully posted");
+            
+        }
+    }];
+    
+    SceneDelegate *myDelegate = (SceneDelegate *)self.view.window.windowScene.delegate;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    myDelegate.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"HomeFeed"];
+}
+
+
+- (UIImage *)resizeImage:(UIImage *)image withSize:(CGSize)size {
+    UIImageView *resizeImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+    
+    resizeImageView.contentMode = UIViewContentModeScaleAspectFill;
+    resizeImageView.image = image;
+    
+    UIGraphicsBeginImageContext(size);
+    [resizeImageView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
 }
 
 /*
@@ -55,15 +102,5 @@
     // Pass the selected object to the new view controller.
 }
 */
-
-- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    //
-    return 0;
-}
-
-- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    //
-    return 0;
-}
 
 @end
