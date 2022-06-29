@@ -30,18 +30,16 @@
     self.tableView.dataSource = self;
     //self.tableView.rowHeight = UITableViewAutomaticDimension;
     
-    [self queryImages];
-    
     // refresh control
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(queryImages) forControlEvents:UIControlEventValueChanged];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
     
+    [self queryImages];
     
-    [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(onTimer) userInfo:nil repeats:true];
-    
-    
-    [self.tableView reloadData];
+//    [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(onTimer) userInfo:nil repeats:true];
+
+//    [self.tableView reloadData];
     
 }
 
@@ -68,9 +66,9 @@
         } else {
             NSLog(@"%@", error.localizedDescription);
         }
+        [self.refreshControl endRefreshing];
     }];
     
-    [self.refreshControl endRefreshing];
 }
 
 

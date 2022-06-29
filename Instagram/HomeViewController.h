@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HomeViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface HomeViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *logoutButton;
 
 @end

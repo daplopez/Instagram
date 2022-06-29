@@ -81,12 +81,15 @@
     UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
 
-    // Do something with the images (based on your use case)
-    //[self.imageToPost setImage:editedImage];
     CGRect bounds = UIScreen.mainScreen.bounds;
     CGFloat width = bounds.size.width;
-    self.imageToPost.image = [self resizeImage:editedImage withSize:CGSizeMake(width, width)];
     
+    if(editedImage) {
+        self.imageToPost.image = [self resizeImage:editedImage withSize:CGSizeMake(width, width)];
+    } else {
+        self.imageToPost.image = [self resizeImage:originalImage withSize:CGSizeMake(width, width)];
+    }
+        
     // Dismiss UIImagePickerController to go back to your original view controller
     [self dismissViewControllerAnimated:YES completion:nil];
 }
