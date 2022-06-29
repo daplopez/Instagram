@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet PFImageView *feedImage;
 @property (weak, nonatomic) IBOutlet UILabel *caption;
 @property (weak, nonatomic) IBOutlet UILabel *timeStampLabel;
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 
 @end
 

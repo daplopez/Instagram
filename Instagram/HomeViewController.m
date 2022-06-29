@@ -112,6 +112,7 @@
     [cell.feedImage loadInBackground];
     cell.caption.text = post[@"caption"];
     cell.timeStampLabel.text = post.createdAt.shortTimeAgoSinceNow;
+    cell.usernameLabel.text = PFUser.currentUser.username;
     return cell;
 }
 
