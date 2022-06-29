@@ -12,6 +12,7 @@
 #import "Post.h"
 #import "Parse/PFImageView.h"
 #import "DetailsViewController.h"
+#import "DateTools.h"
 
 
 @interface HomeViewController ()
@@ -26,19 +27,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self setUpViewProperties];
+    
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    //self.tableView.rowHeight = UITableViewAutomaticDimension;
+    
     [self createRefreshControl];
     [self queryImages];
     [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(onTimer) userInfo:nil repeats:true];
     [self.tableView reloadData];
     
-}
-
-
-- (void)setUpViewProperties {
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    //self.tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
 
@@ -113,6 +111,7 @@
     cell.feedImage.file = post[@"image"];
     [cell.feedImage loadInBackground];
     cell.caption.text = post[@"caption"];
+    cell.timeStampLabel.text = post.createdAt.shortTimeAgoSinceNow;
     return cell;
 }
 

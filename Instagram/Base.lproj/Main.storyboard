@@ -123,6 +123,13 @@
                                                         <constraint firstAttribute="height" constant="400" id="Ych-4z-mJK"/>
                                                     </constraints>
                                                 </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m0S-T8-sv2">
+                                                    <rect key="frame" x="8" y="444" width="42" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="RBk-5f-sAW" firstAttribute="top" secondItem="yKv-s8-9e4" secondAttribute="bottom" constant="8" id="4qu-WN-Dkg"/>
@@ -148,6 +155,7 @@
                                         <connections>
                                             <outlet property="caption" destination="RBk-5f-sAW" id="hWh-Hk-gte"/>
                                             <outlet property="feedImage" destination="yKv-s8-9e4" id="Ngt-q8-ch1"/>
+                                            <outlet property="timeStampLabel" destination="m0S-T8-sv2" id="ONi-N2-hTg"/>
                                             <segue destination="gpe-pd-N8s" kind="show" identifier="DetailsSegue" id="zu9-5Q-lxC"/>
                                         </connections>
                                     </tableViewCell>
