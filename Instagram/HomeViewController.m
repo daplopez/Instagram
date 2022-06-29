@@ -19,6 +19,7 @@
 @property (strong, nonatomic) NSArray *feedPosts;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
+//@property (assign, nonatomic) BOOL isMoreDataLoading;
 
 @end
 
@@ -103,6 +104,7 @@
     }
     
 }
+
 
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
