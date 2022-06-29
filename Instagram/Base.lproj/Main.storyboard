@@ -322,6 +322,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="dxm-EQ-Eu9"/>
                     <connections>
+                        <outlet property="collectionView" destination="bsK-Co-ZMs" id="oUe-DX-4wd"/>
                         <outlet property="profileImage" destination="uNg-4k-TTK" id="F7H-UA-6dJ"/>
                         <outlet property="tableView" destination="FPt-nl-Tdv" id="CGC-w9-Bqb"/>
                         <outlet property="usernameLabel" destination="9is-Bw-piL" id="LfZ-EE-la0"/>

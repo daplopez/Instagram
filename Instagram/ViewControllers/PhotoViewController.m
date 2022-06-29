@@ -17,73 +17,28 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    /*
-    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
-    imagePickerVC.delegate = self;
-    imagePickerVC.allowsEditing = YES;
-
-    // The Xcode simulator does not support taking pictures, so let's first check that the camera is indeed supported on the device before trying to present it.
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
-    }
-    else {
-        NSLog(@"Camera 🚫 available so we will use photo library instead");
-        imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    }
-
-    [self presentViewController:imagePickerVC animated:YES completion:nil];
-     */
 }
 
 - (IBAction)didTapCamera:(id)sender {
-    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
-    imagePickerVC.delegate = self;
-    imagePickerVC.allowsEditing = YES;
-
-    // The Xcode simulator does not support taking pictures, so let's first check that the camera is indeed supported on the device before trying to present it.
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
-    }
-    else {
-        NSLog(@"Camera 🚫 available so we will use photo library instead");
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Camera not available" message:@"Defaulting to photo library" preferredStyle:(UIAlertControllerStyleAlert)];
-        // create a cancel action
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        // handle cancel response here. Doing nothing will dismiss the view.
-            [self presentViewController:imagePickerVC animated:YES completion:nil];
-            
-        }];
-        // add the cancel action to the alertController
-        [alert addAction:cancelAction];
-
-        [self presentViewController:alert animated:YES completion:nil];
-        imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        
-    }
-    [self presentViewController:imagePickerVC animated:YES completion:nil];
+    [self useCamera];
 }
 
 - (IBAction)didTapAlbum:(id)sender {
     UIImagePickerController *imagePickerVC = [UIImagePickerController new];
     imagePickerVC.delegate = self;
     imagePickerVC.allowsEditing = YES;
-    
     imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    
     [self presentViewController:imagePickerVC animated:YES completion:nil];
     
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
-    
     // Get the image captured by the UIImagePickerController
     UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
-
+    
     CGRect bounds = UIScreen.mainScreen.bounds;
     CGFloat width = bounds.size.width;
-    
     if(editedImage) {
         self.imageToPost.image = [self resizeImage:editedImage withSize:CGSizeMake(width, width)];
     } else {
@@ -95,6 +50,35 @@
 }
 
 
+- (void)useCamera {
+    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
+    imagePickerVC.delegate = self;
+    imagePickerVC.allowsEditing = YES;
+
+    // The Xcode simulator does not support taking pictures, so check that the camera is supported on device before trying to present it.
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
+    }
+    else {
+        NSLog(@"Camera 🚫 available so we will use photo library instead");
+        [self cameraUnavailableAlert:imagePickerVC];
+    }
+    [self presentViewController:imagePickerVC animated:YES completion:nil];
+}
+
+
+- (void)cameraUnavailableAlert: (UIImagePickerController *) imagePickerVC {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Camera not available" message:@"Defaulting to photo library" preferredStyle:(UIAlertControllerStyleAlert)];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        // present the photo library instead
+        imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        [self presentViewController:imagePickerVC animated:YES completion:nil];
+    }];
+    // add the cancel action to the alertController
+    [alert addAction:cancelAction];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 - (IBAction)didTapCancel:(id)sender {
     SceneDelegate *myDelegate = (SceneDelegate *)self.view.window.windowScene.delegate;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -103,17 +87,15 @@
 
 
 - (IBAction)didTapShare:(id)sender {
-    
     [Post postUserImage:self.imageToPost.image withCaption:self.imageCaption.text withCompletion:^(BOOL succeeded, NSError * _Nullable error) {
         if (error) {
             NSLog(@"Error sharing post");
-            
         } else {
             NSLog(@"Successfully posted");
             
         }
     }];
-    
+    // go back to feed after user is done posting
     SceneDelegate *myDelegate = (SceneDelegate *)self.view.window.windowScene.delegate;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     myDelegate.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"HomeFeed"];

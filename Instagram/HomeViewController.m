@@ -25,26 +25,31 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    [self setUpViewProperties];
+    [self createRefreshControl];
+    [self queryImages];
+    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(onTimer) userInfo:nil repeats:true];
+    [self.tableView reloadData];
+    
+}
+
+
+- (void)setUpViewProperties {
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     //self.tableView.rowHeight = UITableViewAutomaticDimension;
-    
+}
+
+
+- (void)createRefreshControl {
     // refresh control
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(queryImages) forControlEvents:UIControlEventValueChanged];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
-    
-    [self queryImages];
-    
-//    [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(onTimer) userInfo:nil repeats:true];
-
-//    [self.tableView reloadData];
-    
 }
 
 - (void)onTimer {
-   // Add code to be run periodically
     [self queryImages];
 }
 
@@ -53,16 +58,14 @@
     // construct query
     PFQuery *query = [PFQuery queryWithClassName:@"Post"];
     [query orderByDescending:@"createdAt"];
-    //[query whereKey:@"likesCount" greaterThan:@100];
     query.limit = 20;
 
     // fetch data asynchronously
     [query findObjectsInBackgroundWithBlock:^(NSArray *posts, NSError *error) {
         if (posts != nil) {
-            // do something with the array of object returned by the call
+            NSLog(@"Successfully got posts");
             self.feedPosts = posts;
             [self.tableView reloadData];
-            NSLog(@"Successfully got posts");
         } else {
             NSLog(@"%@", error.localizedDescription);
         }
@@ -106,7 +109,6 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     PostTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"PostCell"];
-    
     Post *post = self.feedPosts[indexPath.row];
     cell.feedImage.file = post[@"image"];
     [cell.feedImage loadInBackground];

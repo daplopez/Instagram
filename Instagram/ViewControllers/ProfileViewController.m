@@ -10,6 +10,8 @@
 
 @interface ProfileViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *tableView;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (strong, nonatomic) NSArray *userPosts;
 
 @end
 
@@ -17,13 +19,25 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    
     if (PFUser.currentUser) {
         //[self.profileImage setImage:PFUser.currentUser[@"image"]];
         self.usernameLabel.text = PFUser.currentUser[@"username"];
     }
     
 }
+
+
+- (nonnull __kindof UICollectionViewCell *)collectionView:(nonnull UICollectionView *)collectionView cellForItemAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    return 0;
+}
+
+- (NSInteger)collectionView:(nonnull UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return 0;
+}
+
 
 /*
 #pragma mark - Navigation

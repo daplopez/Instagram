@@ -17,19 +17,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //set image
+    [self settingViewProperties];
+}
+
+- (void)settingViewProperties {
+    [self settingImage];
+    self.captionLabel.text = self.curPost[@"caption"];
+    self.timeStampLabel.text = self.curPost.createdAt.shortTimeAgoSinceNow;
+}
+
+- (void)settingImage {
     self.postImage.file = self.curPost[@"image"];
     [self.postImage loadInBackground];
-    // set caption and time stamp
-    self.captionLabel.text = self.curPost[@"caption"];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"E MMM d HH:mm:ss Z y";
-    formatter.dateStyle = NSDateFormatterShortStyle;
-    formatter.timeStyle = NSDateFormatterNoStyle;
-    self.timeStampLabel.text = self.curPost.createdAt.shortTimeAgoSinceNow;
-    
-    
 }
+
+
+    
+
 
 /*
 #pragma mark - Navigation

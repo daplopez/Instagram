@@ -17,37 +17,40 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
 }
 
 
+- (void)goToHomeScreen {
+    // manually segue to logged in view
+    SceneDelegate *myDelegate = (SceneDelegate *)self.view.window.windowScene.delegate;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    myDelegate.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabBar"];
+}
+
 - (IBAction)didTapSignUp:(id)sender {
     // initialize a user object
-        PFUser *newUser = [PFUser user];
+    PFUser *newUser = [PFUser user];
         
-        // set user properties
-        newUser.username = self.usernameLabel.text;
-        newUser.password = self.passwordLabel.text;
-        //newUser.email = self.emailField.text;
+    // set user properties
+    newUser.username = self.usernameLabel.text;
+    newUser.password = self.passwordLabel.text;
+    //newUser.email = self.emailField.text;
     
     if ([self.usernameLabel.text isEqual:@""] || [self.passwordLabel.text isEqual:@""]) {
         [self emptyField];
     }
     
-        // call sign up function on the object
-        [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
-            if (error != nil) {
-                NSLog(@"Error: %@", error.localizedDescription);
-            } else {
-                NSLog(@"User registered successfully");
-                
-                // manually segue to logged in view
-                SceneDelegate *myDelegate = (SceneDelegate *)self.view.window.windowScene.delegate;
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                myDelegate.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabBar"];
-                //[self performSegueWithIdentifier:@"LoginSegue" sender:nil];
-            }
-        }];
+    // call sign up function on the object
+    [newUser signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * error) {
+        if (error != nil) {
+            NSLog(@"Error: %@", error.localizedDescription);
+        } else {
+            NSLog(@"User registered successfully");
+            
+            [self goToHomeScreen];
+            //[self performSegueWithIdentifier:@"LoginSegue" sender:nil];
+        }
+    }];
 }
 
 
@@ -59,19 +62,17 @@
         [self emptyField];
     }
     
-        [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
-            if (error != nil) {
-                NSLog(@"User log in failed: %@", error.localizedDescription);
-            } else {
-                NSLog(@"User logged in successfully");
-                
-                // display view controller that needs to shown after successful login
-                //[self performSegueWithIdentifier:@"LoginSegue" sender:nil];
-                SceneDelegate *myDelegate = (SceneDelegate *)self.view.window.windowScene.delegate;
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                myDelegate.window.rootViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabBar"];
-            }
-        }];
+    [PFUser logInWithUsernameInBackground:username password:password block:^(PFUser * user, NSError *  error) {
+        if (error != nil) {
+            NSLog(@"User log in failed: %@", error.localizedDescription);
+        } else {
+            NSLog(@"User logged in successfully");
+            
+            // display view controller that needs to shown after successful login
+            //[self performSegueWithIdentifier:@"LoginSegue" sender:nil];
+            [self goToHomeScreen];
+        }
+    }];
 }
 
 - (void)emptyField {
@@ -93,6 +94,7 @@
         [alert addAction:okAction];
         [self presentViewController:alert animated:YES completion:nil];
 }
+
 /*
 #pragma mark - Navigation
 
