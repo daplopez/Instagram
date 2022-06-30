@@ -153,9 +153,9 @@
 			isa = PBXGroup;
 			children = (
 				8D57C216286A5D8500467C3E /* PostTableViewCell.h */,
+				8D57C217286A5D8500467C3E /* PostTableViewCell.m */,
 				8D9E8C70286CEC3B00119F77 /* ProfileCollectionViewCell.h */,
 				8D9E8C71286CEC3B00119F77 /* ProfileCollectionViewCell.m */,
-				8D57C217286A5D8500467C3E /* PostTableViewCell.m */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";

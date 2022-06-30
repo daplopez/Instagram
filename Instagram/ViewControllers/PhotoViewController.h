@@ -10,8 +10,9 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PhotoViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+
 @property (weak, nonatomic) IBOutlet UIImageView *imageToPost;
-@property (weak, nonatomic) IBOutlet UITextView *imageCaption;
+@property (weak, nonatomic) IBOutlet UITextField *imageCaption;
 
 @end
 
