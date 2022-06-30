@@ -57,6 +57,7 @@
     // construct query
     PFQuery *query = [PFQuery queryWithClassName:@"Post"];
     [query orderByDescending:@"createdAt"];
+    [query includeKey:@"author"];
     query.limit = 20;
 
     // fetch data asynchronously
@@ -114,7 +115,8 @@
     [cell.feedImage loadInBackground];
     cell.caption.text = post[@"caption"];
     cell.timeStampLabel.text = post.createdAt.shortTimeAgoSinceNow;
-    cell.usernameLabel.text = PFUser.currentUser.username;
+    PFUser *user = post.author;
+    cell.usernameLabel.text = user.username;
     return cell;
 }
 

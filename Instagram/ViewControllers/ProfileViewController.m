@@ -10,6 +10,7 @@
 #import "ProfileCollectionViewCell.h"
 #import "Post.h"
 #import "Parse/PFImageView.h"
+#import "CollectionDetailsViewController.h"
 
 @interface ProfileViewController () <UICollectionViewDataSource, UICollectionViewDelegate, UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *tableView;
@@ -38,8 +39,7 @@
     // construct query
     PFQuery *query = [PFQuery queryWithClassName:@"Post"];
     [query orderByDescending:@"createdAt"];
-    [query includeKey:PFUser.currentUser.username];
-    query.limit = 20;
+    [query whereKey:@"author" equalTo:[PFUser currentUser]];
 
     // fetch data asynchronously
     [query findObjectsInBackgroundWithBlock:^(NSArray *posts, NSError *error) {
@@ -137,6 +137,23 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     // Setting the poster size in collection view
     return CGSizeMake(130, 130);
+}
+
+
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+    if([segue.identifier isEqualToString:@"CollectionDetails"]) {
+        NSIndexPath *indexPath =[self.collectionView indexPathForCell:sender];
+        Post *dataToPass = self.userPosts[indexPath.row];
+        UINavigationController *navVC = [segue destinationViewController];
+        CollectionDetailsViewController *detailsVC = (CollectionDetailsViewController *) navVC.topViewController;
+        detailsVC.post = dataToPass;
+    }
+    
 }
 
 @end
