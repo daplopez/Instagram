@@ -48,7 +48,7 @@ Here's a walkthrough of implemented user stories:
 
 https://i.imgur.com/1PjaTRW.gif
 
-<img src= "https://i.imgur.com/1PjaTRW.gif" title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src= "https://github.com/daplopez/Instagram/blob/main/Walkthroughs/instaWalkthroughComplete.gif" title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 ## Credits
 
