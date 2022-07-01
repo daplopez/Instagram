@@ -46,17 +46,7 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://github.com/daplopez/Instagram/blob/main/Walkthroughs/MVPFeaturesWalkthrough.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
-Walkthrough of user persistence:
-
-<img src='https://github.com/daplopez/Instagram/blob/main/Walkthroughs/PersistUserWalkthrough.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
-Walkthrough of autolayout:
-
-<img src='https://github.com/daplopez/Instagram/blob/main/Walkthroughs/AutoLayoutWalkthrough.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
-GIF created with [Kap](https://getkap.co/).
+<img src='https://i.imgur.com/1PjaTRW.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 ## Credits
 
@@ -66,7 +56,7 @@ List an 3rd party libraries, icons, graphics, or other assets you used in your a
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+I had some issues with autolayout and encountered some challenges with using parse but overall I really enjoyed this project.
 
 ## License
 
